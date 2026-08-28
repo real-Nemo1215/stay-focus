@@ -16,90 +16,77 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom High-End Maroon Theme CSS mirroring Next.js
+# Custom Styling to precisely match the Next.js web interface
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 
-    * {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    html, body, [class*="css"], .stMarkdown, p, div, span, button, input {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     }
 
+    /* Overall background */
     .stApp {
-        background: linear-gradient(180deg, #FAF4F6 0%, #F5E6E9 50%, #EED6DC 100%) !important;
+        background: linear-gradient(180deg, #FAF4F6 0%, #F5E6E9 40%, #FFFFFF 100%) !important;
     }
 
-    /* Main Container max-width for desktop elegance */
-    .block-container {
-        max-width: 1080px !important;
-        padding-top: 2rem !important;
-        padding-bottom: 3rem !important;
+    /* Desktop centered container */
+    .main .block-container {
+        max-width: 1060px !important;
+        padding: 2.5rem 1.5rem 4rem 1.5rem !important;
+        margin: 0 auto !important;
     }
 
-    /* Primary Maroon Buttons */
-    .stButton > button {
-        background: linear-gradient(135deg, #800020 0%, #8B1E3F 50%, #5C0A19 100%) !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        font-size: 0.88rem !important;
-        border: none !important;
-        border-radius: 14px !important;
-        padding: 0.6rem 1.3rem !important;
-        box-shadow: 0 4px 14px rgba(128, 0, 32, 0.22) !important;
-        transition: all 0.2s ease !important;
-    }
-    .stButton > button:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 6px 20px rgba(128, 0, 32, 0.32) !important;
-        color: #ffffff !important;
-    }
-
-    /* Secondary / Action Buttons */
-    button[kind="secondary"] {
-        background: #ffffff !important;
-        color: #800020 !important;
-        border: 1px solid #E2B7C1 !important;
-        box-shadow: 0 2px 6px rgba(128, 0, 32, 0.05) !important;
-    }
-
-    /* Cards */
-    .focus-card {
+    /* Header Bar */
+    .app-header {
         background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(128, 0, 32, 0.14);
-        border-radius: 26px;
-        padding: 1.75rem;
-        box-shadow: 0 10px 30px rgba(128, 0, 32, 0.04);
-        margin-bottom: 1.5rem;
-    }
-
-    .focus-header-box {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(128, 0, 32, 0.14);
-        border-radius: 22px;
-        padding: 1rem 1.5rem;
-        box-shadow: 0 4px 16px rgba(128, 0, 32, 0.03);
-        margin-bottom: 1.5rem;
+        backdrop-filter: blur(16px);
+        border: 1px solid #E9CAD1;
+        border-radius: 24px;
+        padding: 1rem 1.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 20px rgba(128, 0, 32, 0.04);
+        margin-bottom: 1.75rem;
     }
 
     /* Date Banner */
-    .date-banner-pill {
+    .date-pill-banner {
         background: #FAF0F3;
         border: 1px solid #E5BEC5;
         color: #800020;
-        border-radius: 16px;
-        padding: 0.4rem 1.2rem;
+        border-radius: 9999px;
+        padding: 0.4rem 1.4rem;
         font-weight: 700;
         font-size: 0.85rem;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        box-shadow: 0 2px 6px rgba(128, 0, 32, 0.03);
+        box-shadow: 0 2px 8px rgba(128, 0, 32, 0.03);
     }
 
-    /* Badge Counter */
-    .done-badge {
+    /* Cards */
+    .my-focus-card {
+        background: #ffffff;
+        border: 1px solid #E9CAD1;
+        border-radius: 28px;
+        padding: 1.75rem;
+        box-shadow: 0 4px 24px rgba(128, 0, 32, 0.04);
+        min-height: 480px;
+    }
+
+    .partner-focus-card {
+        background: #ffffff;
+        border: 1px solid #DFD5E8;
+        border-radius: 28px;
+        padding: 1.75rem;
+        box-shadow: 0 4px 24px rgba(107, 33, 168, 0.04);
+        min-height: 480px;
+    }
+
+    /* Badges */
+    .my-done-badge {
         background: #FAF0F3;
         color: #800020;
         padding: 4px 12px;
@@ -109,29 +96,53 @@ st.markdown("""
         border: 1px solid #E5BEC5;
     }
 
-    /* Custom Goal List Items */
-    .goal-row {
-        background: #FAF3F5;
-        border: 1px solid #E9CAD1;
+    .partner-done-badge {
+        background: #F3E8FF;
+        color: #6B21A8;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        border: 1px solid #E9D5FF;
+    }
+
+    /* Partner List Item */
+    .partner-task-item {
+        background: #F9F5FC;
+        border: 1px solid #EDE4F5;
         border-radius: 14px;
-        padding: 0.8rem 1rem;
+        padding: 0.85rem 1rem;
         margin-bottom: 0.55rem;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        transition: background 0.15s ease;
-    }
-    .goal-row:hover {
-        background: #F7EAEF;
+        gap: 10px;
     }
 
-    /* Input styling */
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #800020 0%, #8B1E3F 50%, #5C0A19 100%) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.88rem !important;
+        border: none !important;
+        border-radius: 14px !important;
+        padding: 0.6rem 1.4rem !important;
+        box-shadow: 0 4px 14px rgba(128, 0, 32, 0.2) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stButton > button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px rgba(128, 0, 32, 0.3) !important;
+    }
+
+    /* Inputs */
     .stTextInput input {
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         border: 1px solid #DFC0C7 !important;
         background-color: #FAF5F6 !important;
         color: #111827 !important;
-        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+        padding: 0.65rem 1rem !important;
     }
     .stTextInput input:focus {
         background-color: #ffffff !important;
@@ -139,21 +150,21 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(128, 0, 32, 0.2) !important;
     }
 
-    /* Tab styling */
+    /* Tab Pills */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(128, 0, 32, 0.18);
-        padding: 6px;
-        border-radius: 9999px;
-        box-shadow: 0 4px 16px rgba(128, 0, 32, 0.04);
-        justify-content: center;
+        gap: 8px !important;
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        border: 1px solid #E9CAD1 !important;
+        padding: 6px !important;
+        border-radius: 9999px !important;
+        box-shadow: 0 4px 16px rgba(128, 0, 32, 0.04) !important;
+        justify-content: center !important;
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 9999px !important;
         font-weight: 700 !important;
-        font-size: 0.85rem !important;
-        padding: 8px 22px !important;
+        font-size: 0.88rem !important;
+        padding: 8px 24px !important;
         color: #662B37 !important;
         border: none !important;
     }
@@ -163,7 +174,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(128, 0, 32, 0.25) !important;
     }
 
-    /* Progress bar */
+    /* Progress bars */
     .stProgress > div > div > div > div {
         background: linear-gradient(90deg, #800020 0%, #9C1B33 100%) !important;
         border-radius: 9999px !important;
@@ -173,13 +184,6 @@ st.markdown("""
         border: 1px solid #F0D5DA !important;
         border-radius: 9999px !important;
         height: 10px !important;
-    }
-
-    /* Checkbox custom accent */
-    .stCheckbox label span {
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        color: #111827 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -224,7 +228,7 @@ ACCOUNTS = {
     }
 }
 
-# Session State Initialization
+# Session State
 if "user" not in st.session_state:
     st.session_state.user = None
 if "username" not in st.session_state:
@@ -234,7 +238,7 @@ if "profile" not in st.session_state:
 if "partner_profile" not in st.session_state:
     st.session_state.partner_profile = None
 
-# Date Calculations
+# Dates
 now = datetime.date.today()
 yesterday = now - datetime.timedelta(days=1)
 today_iso = now.isoformat()
@@ -271,10 +275,10 @@ def load_profile_and_partner(user_id, username):
 
 
 # ==========================================
-# 1. LOGIN SCREEN (Clean & Secure)
+# 1. LOGIN SCREEN
 # ==========================================
 if not st.session_state.user:
-    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1, 1.8, 1])
 
     with c2:
@@ -283,13 +287,13 @@ if not st.session_state.user:
             <div style='display: inline-flex; width: 64px; height: 64px; background: #F7E7EA; border-radius: 20px; align-items: center; justify-content: center; font-size: 32px; border: 1px solid #E5BEC5; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0.75rem;'>
                 🎯
             </div>
-            <h1 style='color: #800020; font-weight: 900; margin: 0; font-size: 2.2rem; tracking-tight;'>Focus</h1>
+            <h1 style='color: #800020; font-weight: 900; margin: 0; font-size: 2.3rem;'>Focus</h1>
             <p style='color: #733844; font-size: 0.9rem; font-weight: 600; margin-top: 4px;'>Sign in to your shared Focus workspace</p>
         </div>
         """, unsafe_allow_html=True)
 
         with st.container():
-            st.markdown("<div class='focus-card'>", unsafe_allow_html=True)
+            st.markdown("<div style='background: white; border: 1px solid #E9CAD1; border-radius: 26px; padding: 2rem; box-shadow: 0 10px 30px rgba(128,0,32,0.06);'>", unsafe_allow_html=True)
 
             selected_acc = st.radio(
                 "Select Account",
@@ -344,7 +348,7 @@ if not st.session_state.user:
 
 
 # ==========================================
-# 2. MAIN DASHBOARD
+# 2. DESKTOP MAIN DASHBOARD
 # ==========================================
 current_user = st.session_state.user
 current_username = st.session_state.username
@@ -353,19 +357,18 @@ partner_name = user_info.get("partner", "Partner")
 partner_avatar = user_info.get("partner_avatar", "💫")
 user_avatar = user_info.get("avatar", "👤")
 
-# Header Bar (Matching Next.js layout)
-st.markdown("<div class='focus-header-box'>", unsafe_allow_html=True)
+# Header Bar
 h1, h2, h3 = st.columns([3.5, 1.2, 1])
 
 with h1:
     st.markdown(f"""
     <div style='display: flex; align-items: center; gap: 14px;'>
-        <div style='width: 48px; height: 48px; background: #F7E7EA; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1px solid #E5BEC5; box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);'>
+        <div style='width: 48px; height: 48px; background: #F7E7EA; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 1px solid #E5BEC5;'>
             🎯
         </div>
         <div>
             <h2 style='color: #800020; font-weight: 900; margin: 0; line-height: 1.1; font-size: 1.6rem;'>Focus</h2>
-            <span style='color: #733844; font-size: 0.8rem; font-weight: 700;'>{current_username} & {partner_name} &bull; Shared Focus Space</span>
+            <span style='color: #733844; font-size: 0.82rem; font-weight: 700;'>{current_username} & {partner_name} &bull; Shared Focus Space</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -373,7 +376,7 @@ with h1:
 with h2:
     st.markdown(f"""
     <div style='display: flex; justify-content: flex-end; align-items: center; height: 100%;'>
-        <span style='background: #FAF0F3; color: #800020; padding: 6px 14px; border-radius: 12px; border: 1px solid #E2B7C1; font-weight: 800; font-size: 0.82rem; box-shadow: 0 1px 4px rgba(0,0,0,0.03);'>
+        <span style='background: #FAF0F3; color: #800020; padding: 6px 14px; border-radius: 12px; border: 1px solid #E2B7C1; font-weight: 800; font-size: 0.82rem;'>
             {user_avatar} {current_username}
         </span>
     </div>
@@ -390,7 +393,7 @@ with h3:
         st.session_state.partner_profile = None
         st.rerun()
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # Main Navigation Tabs
 tab_today, tab_yesterday, tab_monthly = st.tabs([
@@ -399,7 +402,7 @@ tab_today, tab_yesterday, tab_monthly = st.tabs([
     "🌙 Monthly Focus"
 ])
 
-# Fetch all goals for both partners
+# Fetch data
 profile_id = st.session_state.profile.get("id") if st.session_state.profile else current_user.id
 partner_id = st.session_state.partner_profile.get("id") if st.session_state.partner_profile else None
 
@@ -439,9 +442,10 @@ def filter_goals(goals_list, tab_type):
 
 
 def render_focus_tab(tab_type, banner_html, allow_add=True):
-    # Prominent Date Banner
-    st.markdown(f"<div style='text-align: center; margin-top: 0.5rem; margin-bottom: 1.25rem;'><span class='date-banner-pill'>{banner_html}</span></div>", unsafe_allow_html=True)
+    # Date Banner
+    st.markdown(f"<div style='text-align: center; margin-top: 0.5rem; margin-bottom: 1.25rem;'><span class='date-pill-banner'>{banner_html}</span></div>", unsafe_allow_html=True)
 
+    # 2 Wide Desktop Columns
     col_my, col_part = st.columns(2, gap="large")
 
     active_my = filter_goals(my_goals, tab_type)
@@ -453,18 +457,18 @@ def render_focus_tab(tab_type, banner_html, allow_add=True):
     my_pct = int((my_done / len(active_my) * 100)) if len(active_my) > 0 else 0
     part_pct = int((part_done / len(active_part) * 100)) if len(active_part) > 0 else 0
 
-    # 1. User Column (Left)
+    # 1. Left Column: User's Focus
     with col_my:
-        st.markdown("<div class='focus-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='my-focus-card'>", unsafe_allow_html=True)
         h_col1, h_col2 = st.columns([3, 1])
         with h_col1:
-            st.markdown(f"<h3 style='color: #800020; font-weight: 900; margin:0; font-size: 1.25rem;'>{user_avatar} {current_username}'s Focus</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color: #800020; font-weight: 900; margin:0; font-size: 1.3rem;'>{user_avatar} {current_username}'s Focus</h3>", unsafe_allow_html=True)
         with h_col2:
-            st.markdown(f"<div style='text-align: right;'><span class='done-badge'>{my_done}/{len(active_my)} Done</span></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align: right;'><span class='my-done-badge'>{my_done}/{len(active_my)} Done</span></div>", unsafe_allow_html=True)
 
         st.progress(my_pct / 100.0)
 
-        # Add Goal Form (Today and Monthly)
+        # Add Goal Form
         if allow_add:
             with st.form(key=f"add_form_{tab_type}", clear_on_submit=True):
                 c_in, c_btn = st.columns([4, 1])
@@ -503,10 +507,10 @@ def render_focus_tab(tab_type, banner_html, allow_add=True):
             </div>
             """, unsafe_allow_html=True)
 
-        # Goal Items List
+        # List
         if not active_my:
-            msg = "No focus items recorded for yesterday. ⏳" if tab_type == "yesterday" else "No focus items yet. Add one above! ✨"
-            st.markdown(f"<div style='text-align: center; padding: 2.5rem; color: #9E6772; font-style: italic; background: #FAF5F6; border-radius: 16px; border: 1px dashed #E5CBD1;'>{msg}</div>", unsafe_allow_html=True)
+            msg = "No focus items recorded for yesterday. ⏳" if tab_type == "yesterday" else "No focus items yet for today. Add one above! ✨"
+            st.markdown(f"<div style='text-align: center; padding: 3rem; color: #9E6772; font-style: italic; background: #FAF5F6; border-radius: 16px; border: 1px dashed #E5CBD1;'>{msg}</div>", unsafe_allow_html=True)
         else:
             for g in active_my:
                 g_id = g.get("id")
@@ -551,19 +555,19 @@ def render_focus_tab(tab_type, banner_html, allow_add=True):
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # 2. Partner Column (Right)
+    # 2. Right Column: Partner's Focus
     with col_part:
-        st.markdown("<div class='focus-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='partner-focus-card'>", unsafe_allow_html=True)
         ph_col1, ph_col2 = st.columns([3, 1])
         with ph_col1:
-            st.markdown(f"<h3 style='color: #5C0A19; font-weight: 900; margin:0; font-size: 1.25rem;'>{partner_avatar} {partner_name}'s Focus</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color: #6B21A8; font-weight: 900; margin:0; font-size: 1.3rem;'>{partner_avatar} {partner_name}'s Focus</h3>", unsafe_allow_html=True)
         with ph_col2:
-            st.markdown(f"<div style='text-align: right;'><span class='done-badge'>{part_done}/{len(active_part)} Done</span></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align: right;'><span class='partner-done-badge'>{part_done}/{len(active_part)} Done</span></div>", unsafe_allow_html=True)
 
         st.progress(part_pct / 100.0)
 
         if not active_part:
-            st.markdown(f"<div style='text-align: center; padding: 3rem; color: #9E6772; font-style: italic; background: #FAF5F6; border-radius: 16px; border: 1px dashed #E5CBD1;'>{partner_name} hasn't added any focus items. 🎯</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align: center; padding: 3.5rem; color: #9E6772; font-style: italic; background: #FDFBFF; border-radius: 16px; border: 1px dashed #DFD5E8;'>{partner_name} hasn't added any focus items. 🎯</div>", unsafe_allow_html=True)
         else:
             for pg in active_part:
                 p_done = pg.get("is_completed", False)
@@ -572,12 +576,12 @@ def render_focus_tab(tab_type, banner_html, allow_add=True):
                 style_line = "text-decoration: line-through; color: #9E6772;" if p_done else "color: #111827; font-weight: 700;"
 
                 st.markdown(f"""
-                <div class='goal-row'>
-                    <span style='font-size: 0.88rem; {style_line}'>{icon} {p_title}</span>
+                <div class='partner-task-item'>
+                    <span style='font-size: 0.9rem; {style_line}'>{icon} {p_title}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
-        st.markdown(f"<div style='text-align: center; margin-top: 1.75rem; font-size: 0.75rem; color: rgba(128,0,32,0.65); font-weight: 700;'>⚡ Real-time synced with {partner_name}'s Focus</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='text-align: center; margin-top: 2rem; font-size: 0.75rem; color: rgba(107,33,168,0.7); font-weight: 700;'>⚡ Real-time synced with {partner_name}'s Focus</div>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
 
