@@ -247,10 +247,9 @@ if not st.session_state.user:
                 horizontal=True
             )
 
-            acc_info = ACCOUNTS[selected_acc]
             password = st.text_input(
                 f"Password for {selected_acc}",
-                value=acc_info["default_pass"],
+                placeholder="Enter your password",
                 type="password"
             )
 
@@ -284,16 +283,9 @@ if not st.session_state.user:
                                     st.session_state.username = selected_acc
                                     load_profile_and_partner(retry.user.id, selected_acc)
                                     st.rerun()
-                        except Exception as e2:
+                        except Exception:
                             st.error(f"Login failed: {err}")
 
-            st.markdown(f"""
-            <div style='margin-top: 1.5rem; background: #FAF0F3; border: 1px solid #E9C6CE; border-radius: 12px; padding: 0.75rem; font-size: 0.8rem; color: #800020;'>
-                <strong>🔑 Quick Credentials:</strong><br>
-                &bull; <b>Nemo</b>: <code>Nemo1215!!!</code><br>
-                &bull; <b>pikachu</b>: <code>pikachu2108!!!</code>
-            </div>
-            """, unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()

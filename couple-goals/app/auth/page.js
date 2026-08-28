@@ -9,19 +9,17 @@ const ALLOWED_ACCOUNTS = {
     username: 'Nemo',
     email: 'nemo@focus.app',
     avatar: '🐠',
-    defaultPass: 'Nemo1215!!!',
   },
   pikachu: {
     username: 'pikachu',
     email: 'pikachu@focus.app',
     avatar: '⚡',
-    defaultPass: 'pikachu2108!!!',
   },
 }
 
 export default function AuthPage() {
   const [selectedUsername, setSelectedUsername] = useState('Nemo')
-  const [password, setPassword] = useState('Nemo1215!!!')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const router = useRouter()
@@ -29,10 +27,7 @@ export default function AuthPage() {
   const handleSelectAccount = (username) => {
     setSelectedUsername(username)
     setError(null)
-    const acc = ALLOWED_ACCOUNTS[username.toLowerCase()]
-    if (acc) {
-      setPassword(acc.defaultPass)
-    }
+    setPassword('')
   }
 
   const handleLogin = async (e) => {
@@ -133,12 +128,9 @@ export default function AuthPage() {
                       : 'bg-white border-[#E6CBD1] hover:border-[#800020]/40'
                   }`}
                 >
-                  <span className="text-2xl">{acc.avatar}</span>
-                  <span className={`text-sm font-bold ${isSelected ? 'text-[#800020]' : 'text-gray-700'}`}>
+                  <span className="text-3xl mb-1">{acc.avatar}</span>
+                  <span className={`text-base font-bold ${isSelected ? 'text-[#800020]' : 'text-gray-700'}`}>
                     {acc.username}
-                  </span>
-                  <span className="text-[10px] text-[#9E5765] font-mono">
-                    Pass: {acc.defaultPass}
                   </span>
                 </button>
               )
@@ -176,10 +168,8 @@ export default function AuthPage() {
           </button>
         </form>
 
-        <div className="mt-6 p-3.5 bg-[#FAF0F3] border border-[#E9C6CE] rounded-xl text-[11px] text-[#800020] leading-relaxed">
-          <p className="font-bold mb-1">🔑 Account Credentials:</p>
-          <p>&bull; <strong>Nemo</strong>: <code className="bg-white px-1.5 py-0.5 rounded border border-[#E2B7C1] font-mono">Nemo1215!!!</code></p>
-          <p>&bull; <strong>pikachu</strong>: <code className="bg-white px-1.5 py-0.5 rounded border border-[#E2B7C1] font-mono">pikachu2108!!!</code></p>
+        <div className="mt-8 text-center text-xs text-[#800020]/50 font-medium">
+          Focus &bull; Shared Goal Tracker
         </div>
       </div>
     </div>
