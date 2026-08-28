@@ -1,0 +1,24 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+
+# Environment variables & secrets (keep credentials safe)
+.env
+.env.local
+.env*.local
+*.env
+
+# Operating System files
+.DS_Store
+Thumbs.db
