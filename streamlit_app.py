@@ -247,12 +247,12 @@ if not st.session_state.user:
                 horizontal=True
             )
 
+            acc_info = ACCOUNTS[selected_acc]
             password = st.text_input(
                 f"Password for {selected_acc}",
                 placeholder="Enter your password",
                 type="password"
             )
-
             if st.button(f"Log In as {selected_acc} 🎯", use_container_width=True):
                 with st.spinner("Signing in..."):
                     try:
