@@ -6,8 +6,18 @@ import { useRouter } from 'next/navigation'
 import { ACCOUNTS_CONFIG } from '@/lib/accountConfig'
 
 function RenderAvatar({ avatar, name, className = "text-3xl mb-1" }) {
-  if (avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))) {
-    return <img src={avatar} alt={name} className="w-10 h-10 rounded-full object-cover mb-1 border border-[#E5BEC5]" />
+  const [imgError, setImgError] = useState(false)
+  const isImage = !imgError && avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))
+
+  if (isImage) {
+    return (
+      <img
+        src={avatar}
+        alt={name}
+        onError={() => setImgError(true)}
+        className="w-12 h-12 rounded-full object-cover mb-1 border-2 border-[#E5BEC5] shadow-xs flex-shrink-0 aspect-square"
+      />
+    )
   }
   return <span className={className}>{avatar || '👤'}</span>
 }
@@ -117,7 +127,7 @@ export default function AuthPage() {
                   key={acc.username}
                   type="button"
                   onClick={() => handleSelectAccount(acc.username)}
-                  className={`p-4 rounded-2xl border flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                  className={`p-4 rounded-2xl border flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-[#FCF0F3] border-[#800020] ring-2 ring-[#800020]/30 shadow-md shadow-[#800020]/10'
                       : 'bg-white border-[#E6CBD1] hover:border-[#800020]/40'

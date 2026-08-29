@@ -22,18 +22,22 @@ const formatDisplayDate = (date) => {
   })
 }
 
-// Avatar Renderer Component (supports emojis, local files '/avatar.png', or web URLs)
-function RenderAvatar({ avatar, name, className = 'w-6 h-6 inline-block' }) {
-  if (avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))) {
+// Avatar Renderer Component (supports emojis, local files '/avatar.jpg', or web URLs)
+function RenderAvatar({ avatar, name, className = 'w-6 h-6' }) {
+  const [imgError, setImgError] = useState(false)
+  const isImage = !imgError && avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))
+
+  if (isImage) {
     return (
       <img
         src={avatar}
         alt={name || 'avatar'}
-        className={`rounded-full object-cover border border-[#E5BEC5] inline-block ${className}`}
+        onError={() => setImgError(true)}
+        className={`rounded-full object-cover border border-[#E5BEC5] inline-block aspect-square flex-shrink-0 align-middle ${className}`}
       />
     )
   }
-  return <span className="inline-block select-none">{avatar || '👤'}</span>
+  return <span className="inline-block select-none text-base leading-none align-middle">{avatar || '👤'}</span>
 }
 
 export default function FocusDashboard() {
@@ -427,7 +431,7 @@ export default function FocusDashboard() {
 
           <div className="flex items-center gap-3">
             <div className="text-xs bg-[#FAF0F3] text-[#800020] px-3.5 py-1.5 rounded-xl font-bold border border-[#E2B7C1] flex items-center gap-2 shadow-sm">
-              <RenderAvatar avatar={myMeta.avatar} name={profile.name} className="w-5 h-5" />
+              <RenderAvatar avatar={myMeta.avatar} name={profile.name} className="w-6 h-6" />
               <span>{profile.name}</span>
             </div>
             <button
@@ -490,8 +494,8 @@ export default function FocusDashboard() {
           <div className="bg-white rounded-3xl shadow-sm border border-[#800020]/15 p-6 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg sm:text-xl font-black text-[#800020] flex items-center gap-2">
-                  <RenderAvatar avatar={myMeta.avatar} name={profile.name} className="w-6 h-6" />
+                <h2 className="text-lg sm:text-xl font-black text-[#800020] flex items-center gap-2.5">
+                  <RenderAvatar avatar={myMeta.avatar} name={profile.name} className="w-8 h-8" />
                   <span>{profile.name}&apos;s Focus</span>
                 </h2>
                 <span className="text-xs font-bold px-3 py-1 bg-[#FAF0F3] text-[#800020] rounded-full border border-[#E5BEC5]">
@@ -571,6 +575,7 @@ export default function FocusDashboard() {
                       </label>
 
                       <div className="flex items-center gap-1.5">
+                        {/* If in Yesterday tab and item is not completed, offer 1-click move to today */}
                         {activeTab === 'yesterday' && !goal.is_completed && (
                           <button
                             onClick={() => copyToToday(goal)}
@@ -599,8 +604,8 @@ export default function FocusDashboard() {
           <div className="bg-white rounded-3xl shadow-sm border border-[#800020]/15 p-6 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg sm:text-xl font-black text-[#5C0A19] flex items-center gap-2">
-                  <RenderAvatar avatar={partnerMeta.avatar} name={partnerDisplayName} className="w-6 h-6" />
+                <h2 className="text-lg sm:text-xl font-black text-[#5C0A19] flex items-center gap-2.5">
+                  <RenderAvatar avatar={partnerMeta.avatar} name={partnerDisplayName} className="w-8 h-8" />
                   <span>{partnerDisplayName}&apos;s Focus</span>
                 </h2>
                 <span className="text-xs font-bold px-3 py-1 bg-[#FAF0F3] text-[#800020] rounded-full border border-[#E5BEC5]">
