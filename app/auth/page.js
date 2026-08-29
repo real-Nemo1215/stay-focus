@@ -3,18 +3,13 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+import { ACCOUNTS_CONFIG } from '@/lib/accountConfig'
 
-const ALLOWED_ACCOUNTS = {
-  nemo: {
-    username: 'Nemo',
-    email: 'nemo@focus.app',
-    avatar: '🐠',
-  },
-  pikachu: {
-    username: 'pikachu',
-    email: 'pikachu@focus.app',
-    avatar: '⚡',
-  },
+function RenderAvatar({ avatar, name, className = "text-3xl mb-1" }) {
+  if (avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))) {
+    return <img src={avatar} alt={name} className="w-10 h-10 rounded-full object-cover mb-1 border border-[#E5BEC5]" />
+  }
+  return <span className={className}>{avatar || '👤'}</span>
 }
 
 export default function AuthPage() {
@@ -36,10 +31,10 @@ export default function AuthPage() {
     setLoading(true)
 
     const key = selectedUsername.trim().toLowerCase()
-    const account = ALLOWED_ACCOUNTS[key]
+    const account = ACCOUNTS_CONFIG[key]
 
     if (!account) {
-      setError('Invalid account. Only Nemo and pikachu accounts can log in.')
+      setError('Invalid account selected.')
       setLoading(false)
       return
     }
@@ -53,7 +48,7 @@ export default function AuthPage() {
       if (signInError) {
         if (signInError.message.toLowerCase().includes('email not confirmed')) {
           throw new Error(
-            'Email confirmation is required by your Supabase project. Please run the updated supabase/schema.sql in your Supabase SQL Editor to auto-confirm both accounts.'
+            'Email confirmation is required by your Supabase project. Please run supabase/schema.sql in your Supabase SQL Editor to auto-confirm.'
           )
         }
 
@@ -103,7 +98,7 @@ export default function AuthPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#F7E7EA] text-[#800020] text-3xl mb-3 shadow-inner border border-[#E5BEC5]">
             🎯
           </div>
-          <h1 className="text-3xl font-black text-[#800020] tracking-tight">Focus</h1>
+          <h1 className="text-3xl font-black text-[#800020] tracking-tight">Stay Focus</h1>
           <p className="text-sm text-[#733844] mt-1 font-medium">
             Sign in to your shared Focus workspace
           </p>
@@ -115,21 +110,21 @@ export default function AuthPage() {
             Select Account
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {Object.values(ALLOWED_ACCOUNTS).map((acc) => {
+            {Object.values(ACCOUNTS_CONFIG).map((acc) => {
               const isSelected = selectedUsername.toLowerCase() === acc.username.toLowerCase()
               return (
                 <button
                   key={acc.username}
                   type="button"
                   onClick={() => handleSelectAccount(acc.username)}
-                  className={`p-4 rounded-2xl border flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
+                  className={`p-4 rounded-2xl border flex flex-col items-center gap-1 transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-[#FCF0F3] border-[#800020] ring-2 ring-[#800020]/30 shadow-md shadow-[#800020]/10'
                       : 'bg-white border-[#E6CBD1] hover:border-[#800020]/40'
                   }`}
                 >
-                  <span className="text-3xl mb-1">{acc.avatar}</span>
-                  <span className={`text-base font-bold ${isSelected ? 'text-[#800020]' : 'text-gray-700'}`}>
+                  <RenderAvatar avatar={acc.avatar} name={acc.username} />
+                  <span className={`text-sm font-bold ${isSelected ? 'text-[#800020]' : 'text-gray-700'}`}>
                     {acc.username}
                   </span>
                 </button>
@@ -167,10 +162,6 @@ export default function AuthPage() {
             {loading ? 'Signing in...' : `Log In as ${selectedUsername} 🎯`}
           </button>
         </form>
-
-        <div className="mt-8 text-center text-xs text-[#800020]/50 font-medium">
-          Focus &bull; Shared Goal Tracker
-        </div>
       </div>
     </div>
   )

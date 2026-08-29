@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Focus 🎯 - Shared Daily & Monthly Focus Tracker",
+  title: "Stay Focus 🎯 - Shared Daily & Monthly Focus Tracker",
   description: "Shared daily and monthly focus tracker for Nemo & pikachu, synced in real-time.",
 };
 

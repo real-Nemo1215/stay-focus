@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+import { ACCOUNTS_CONFIG, getAccountMeta } from '@/lib/accountConfig'
 
 // Helper date utilities (local time based)
 const getLocalDateString = (date) => {
@@ -19,6 +20,20 @@ const formatDisplayDate = (date) => {
     day: 'numeric',
     year: 'numeric',
   })
+}
+
+// Avatar Renderer Component (supports emojis, local files '/avatar.png', or web URLs)
+function RenderAvatar({ avatar, name, className = 'w-6 h-6 inline-block' }) {
+  if (avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))) {
+    return (
+      <img
+        src={avatar}
+        alt={name || 'avatar'}
+        className={`rounded-full object-cover border border-[#E5BEC5] inline-block ${className}`}
+      />
+    )
+  }
+  return <span className="inline-block select-none">{avatar || '👤'}</span>
 }
 
 export default function FocusDashboard() {
@@ -267,7 +282,6 @@ export default function FocusDashboard() {
 
     const goalType = activeTab === 'monthly' ? 'monthly' : 'daily'
 
-    // Build payload without relying strictly on target_date
     const payload = {
       user_id: user.id,
       title: goalTitle,
@@ -276,7 +290,6 @@ export default function FocusDashboard() {
     }
 
     try {
-      // 1. Try insert with target_date
       let { data, error } = await supabase
         .from('goals')
         .insert({
@@ -286,7 +299,6 @@ export default function FocusDashboard() {
         .select()
         .single()
 
-      // 2. If target_date column is not in schema cache, fallback to insert without it
       if (error && error.message && error.message.includes('target_date')) {
         const fallbackRes = await supabase
           .from('goals')
@@ -386,12 +398,15 @@ export default function FocusDashboard() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#FAF3F5] via-[#F4E4E7] to-[#EBD2D7] text-[#800020] gap-3">
         <span className="text-4xl animate-spin">💫</span>
-        <p className="font-bold text-[#800020]">Loading Focus...</p>
+        <p className="font-bold text-[#800020]">Loading Stay Focus...</p>
       </div>
     )
   }
 
   const partnerDisplayName = partner?.name || (profile?.name === 'Nemo' ? 'pikachu' : 'Nemo')
+
+  const myMeta = getAccountMeta(profile.name)
+  const partnerMeta = getAccountMeta(partnerDisplayName)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FAF4F6] via-[#F5E6E9] to-[#EED6DC] p-4 md:p-8 text-gray-800">
@@ -403,7 +418,7 @@ export default function FocusDashboard() {
               🎯
             </div>
             <div>
-              <h1 className="text-2xl font-black text-[#800020] tracking-tight">Focus</h1>
+              <h1 className="text-2xl font-black text-[#800020] tracking-tight">Stay Focus</h1>
               <p className="text-xs text-[#733844] font-semibold">
                 {profile.name} & {partnerDisplayName} &bull; Shared Focus Space
               </p>
@@ -411,8 +426,8 @@ export default function FocusDashboard() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="text-xs bg-[#FAF0F3] text-[#800020] px-3.5 py-1.5 rounded-xl font-bold border border-[#E2B7C1] flex items-center gap-1.5 shadow-sm">
-              <span>{profile.name === 'Nemo' ? '🐠' : '⚡'}</span>
+            <div className="text-xs bg-[#FAF0F3] text-[#800020] px-3.5 py-1.5 rounded-xl font-bold border border-[#E2B7C1] flex items-center gap-2 shadow-sm">
+              <RenderAvatar avatar={myMeta.avatar} name={profile.name} className="w-5 h-5" />
               <span>{profile.name}</span>
             </div>
             <button
@@ -476,7 +491,8 @@ export default function FocusDashboard() {
             <div>
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-lg sm:text-xl font-black text-[#800020] flex items-center gap-2">
-                  <span>{profile.name === 'Nemo' ? '🐠' : '⚡'}</span> {profile.name}&apos;s Focus
+                  <RenderAvatar avatar={myMeta.avatar} name={profile.name} className="w-6 h-6" />
+                  <span>{profile.name}&apos;s Focus</span>
                 </h2>
                 <span className="text-xs font-bold px-3 py-1 bg-[#FAF0F3] text-[#800020] rounded-full border border-[#E5BEC5]">
                   {myCompletedCount}/{activeMyGoals.length} Done
@@ -555,7 +571,6 @@ export default function FocusDashboard() {
                       </label>
 
                       <div className="flex items-center gap-1.5">
-                        {/* If in Yesterday tab and item is not completed, offer 1-click move to today */}
                         {activeTab === 'yesterday' && !goal.is_completed && (
                           <button
                             onClick={() => copyToToday(goal)}
@@ -585,7 +600,8 @@ export default function FocusDashboard() {
             <div>
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-lg sm:text-xl font-black text-[#5C0A19] flex items-center gap-2">
-                  <span>{partnerDisplayName === 'pikachu' ? '⚡' : '🐠'}</span> {partnerDisplayName}&apos;s Focus
+                  <RenderAvatar avatar={partnerMeta.avatar} name={partnerDisplayName} className="w-6 h-6" />
+                  <span>{partnerDisplayName}&apos;s Focus</span>
                 </h2>
                 <span className="text-xs font-bold px-3 py-1 bg-[#FAF0F3] text-[#800020] rounded-full border border-[#E5BEC5]">
                   {partnerCompletedCount}/{activePartnerGoals.length} Done
