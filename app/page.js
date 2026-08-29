@@ -22,22 +22,24 @@ const formatDisplayDate = (date) => {
   })
 }
 
-// Avatar Renderer Component (supports emojis, local files '/avatar.jpg', or web URLs)
+// Avatar Renderer Component (supports emojis, local files '/avatar.jpg', or web URLs with hover zoom)
 function RenderAvatar({ avatar, name, className = 'w-6 h-6' }) {
   const [imgError, setImgError] = useState(false)
   const isImage = !imgError && avatar && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))
 
   if (isImage) {
     return (
-      <img
-        src={avatar}
-        alt={name || 'avatar'}
-        onError={() => setImgError(true)}
-        className={`rounded-full object-cover border border-[#E5BEC5] inline-block aspect-square flex-shrink-0 align-middle ${className}`}
-      />
+      <div className="relative inline-block group">
+        <img
+          src={avatar}
+          alt={name || 'avatar'}
+          onError={() => setImgError(true)}
+          className={`rounded-full object-cover border border-[#E5BEC5] inline-block aspect-square flex-shrink-0 align-middle transition-transform duration-300 ease-out group-hover:scale-175 group-hover:z-50 group-hover:shadow-2xl group-hover:ring-2 group-hover:ring-[#800020] cursor-pointer ${className}`}
+        />
+      </div>
     )
   }
-  return <span className="inline-block select-none text-base leading-none align-middle">{avatar || '👤'}</span>
+  return <span className="inline-block select-none text-base leading-none align-middle transition-transform duration-300 ease-out hover:scale-150 cursor-pointer">{avatar || '👤'}</span>
 }
 
 export default function FocusDashboard() {

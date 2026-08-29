@@ -11,15 +11,17 @@ function RenderAvatar({ avatar, name, className = "text-3xl mb-1" }) {
 
   if (isImage) {
     return (
-      <img
-        src={avatar}
-        alt={name}
-        onError={() => setImgError(true)}
-        className="w-12 h-12 rounded-full object-cover mb-1 border-2 border-[#E5BEC5] shadow-xs flex-shrink-0 aspect-square"
-      />
+      <div className="relative inline-block">
+        <img
+          src={avatar}
+          alt={name}
+          onError={() => setImgError(true)}
+          className="w-12 h-12 rounded-full object-cover mb-1 border-2 border-[#E5BEC5] shadow-xs flex-shrink-0 aspect-square transition-transform duration-300 ease-out hover:scale-150 hover:z-50 hover:shadow-xl hover:ring-2 hover:ring-[#800020] cursor-pointer"
+        />
+      </div>
     )
   }
-  return <span className={className}>{avatar || '👤'}</span>
+  return <span className={`${className} inline-block transition-transform duration-300 ease-out hover:scale-150 cursor-pointer`}>{avatar || '👤'}</span>
 }
 
 export default function AuthPage() {
