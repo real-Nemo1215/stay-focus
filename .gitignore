@@ -19,6 +19,10 @@
 /build
 couple-goals/
 
+# python
+__pycache__/
+*.pyc
+
 # misc
 .DS_Store
 *.pem
